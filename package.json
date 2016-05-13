@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/vigneshnrfs/seneca-error-transform/issues"
   },
-  "homepage": "https://github.com/vigneshnrfs/seneca-error-transform#readme"
+  "homepage": "https://github.com/vigneshnrfs/seneca-error-transform#readme",
+  "dependencies": {
+    "bluebird": "^3.3.5"
+  }
 }
