@@ -25,7 +25,7 @@ module.exports = function (options) {
       return result.payload ? resolve(result.payload) : resolve();
     } else {
 
-      let error = new Error(result.error.errorMessage);
+      let error = new Error(result.error.errorMessage || result.error.message);
       _.extend(error,result.error);
       return reject(error);
     }
