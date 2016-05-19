@@ -27,7 +27,7 @@ module.exports = function (options) {
 
           let error = new Error(result.error.errorMessage || result.error.message);
           console.log(error);
-          _.merge(error, result.error);
+          _.extend(error, result.error);
           console.log(error);
           return reject(error);
         }
