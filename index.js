@@ -11,8 +11,7 @@ module.exports = function (options) {
   //const winston = options.winston;
   delete seneca.fixedargs.fatal$;
 
-  seneca.decorate('fire', (cmd, args, test) => {
-    console.log(cmd, args, test);
+  seneca.decorate('fire', (cmd, args) => {
     return new Promise(function (resolve, reject) {
 
       seneca.act(cmd, args, (err, result) => {
