@@ -11,29 +11,31 @@ module.exports = function (options) {
   //const winston = options.winston;
   delete seneca.fixedargs.fatal$;
 
-  seneca.decorate('fire', (cmd, args,test) => {
-    console.log(cmd,args,test);
-  return new Promise(function (resolve, reject) {
+  seneca.decorate('fire', (cmd, args, test) => {
+    console.log(cmd, args, test);
+    return new Promise(function (resolve, reject) {
 
-    seneca.act(cmd, args, (err, result) => {
-      if (err) {
-        seneca.log.info('Seneca-sanitize error firing:', args, '\n\n', err);
-        reject(err);
-      }
+      seneca.act(cmd, args, (err, result) => {
+        if (err) {
+          seneca.log.info('Seneca-sanitize error firing:', args, '\n\n', err);
+          reject(err);
+        }
 
-      if (result.success) {
-      return result.payload ? resolve(result.payload) : resolve();
-    } else {
+        if (result.success) {
+          return result.payload ? resolve(result.payload) : resolve();
+        } else {
 
-      let error = new Error(result.error.errorMessage || result.error.message);
-      _.extend(error,result.error);
-      return reject(error);
-    }
+          let error = new Error(result.error.errorMessage || result.error.message);
+          console.log(error);
+          _.merge(error, result.error);
+          console.log(error);
+          return reject(error);
+        }
 
-  })
+      })
+    });
+
   });
-
-});
 
   return {
     name: 'errorTransform'
