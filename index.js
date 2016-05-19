@@ -26,9 +26,8 @@ module.exports = function (options) {
         } else {
 
           let error = new Error(result.error.errorMessage || result.error.message);
-          console.log(error);
+
           _.extend(error, result.error);
-          console.log(error);
           return reject(error);
         }
 
