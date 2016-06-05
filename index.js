@@ -11,8 +11,19 @@ module.exports = function (options) {
   //const winston = options.winston;
   delete seneca.fixedargs.fatal$;
 
-  seneca.decorate('fire', (cmd, args) => {
+  seneca.decorate('fire', (cmd, payload) => {
     return new Promise(function (resolve, reject) {
+      if(process.env.NODE_ENV === 'development'){
+        console.log('======== SENECA BEGIN =======');
+        console.log('CMD : ',cmd);
+        console.log('PAYLOAD : ',payload);
+        console.log('======== SENECA END =======');
+
+      }
+      var args ={};
+      args.fatal$ = false;
+      args.default$ = {success:false,error:{message:'Service Down'}};
+      args.payload = payload;
 
       seneca.act(cmd, args, (err, result) => {
         if (err) {
@@ -24,7 +35,7 @@ module.exports = function (options) {
           return result.payload ? resolve(result.payload) : resolve();
         } else {
 
-          let error = new Error(result.error.errorMessage || result.error.message);
+          let error = new Error(result.error.message);
 
           _.extend(error, result.error);
           return reject(error);
