@@ -10,6 +10,7 @@ module.exports = function (options) {
   const seneca = this;
   //const winston = options.winston;
   delete seneca.fixedargs.fatal$;
+  seneca.fixedargs.fatal$ = false;
 
   seneca.decorate('fire', (cmd, payload) => {
     return new Promise(function (resolve, reject) {
@@ -33,11 +34,17 @@ module.exports = function (options) {
 
         if (result.success) {
           return result.payload ? resolve(result.payload) : resolve();
-        } else {
+        } else if(result.error) {
 
           let error = new Error(result.error.message);
 
           _.extend(error, result.error);
+          return reject(error);
+        } else {
+          //Result of pattern match not found
+          let error = new Error('Internal Server Error');
+          error.status = 500;
+          //TODO Notify the central logging system
           return reject(error);
         }
 
